@@ -157,3 +157,34 @@ test.describe('Singlish → Sinhala Translator – PASS Use Cases', () => {
   });
 
 });
+
+
+// ================= FAIL USE CASES =================
+
+test.describe('Singlish → Sinhala Translator – FAIL Use Cases', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://www.swifttranslator.com/');
+  });
+
+  test('FAIL_001 – Scientific unit mistranslation', async ({ page }) => {
+    await page.getByRole('textbox').fill('250 kgm/s');
+    await expect(page.getByText('250 ක්ග්ම්/ස්')).toBeVisible();
+  });
+
+  test('FAIL_002 – Mixed Sinhala + English word corruption', async ({ page }) => {
+    await page.getByRole('textbox').fill('oyaata wathura oonedha');
+    await expect(page.getByText('ඔයාට wඅතුර ඕනෙද')).toBeVisible();
+  });
+
+  test('FAIL_003 – Brand name distortion', async ({ page }) => {
+    await page.getByRole('textbox').fill('bluetooth connect unaa');
+    await expect(page.getByText('බ්ලුඑටෝත් connect උනා')).toBeVisible();
+  });
+
+  test('FAIL_004 – COVID keyword distortion', async ({ page }) => {
+    await page.getByRole('textbox').fill('mata Covid-19 haedhunaa mathakayidha');
+    await expect(page.getByText('Cඔවිඩ්-19')).toBeVisible();
+  });
+
+});
